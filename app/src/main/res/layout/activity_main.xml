@@ -19,7 +19,6 @@
         android:textSize="32sp"
         android:text="tasks" />
 
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/tasksRecyclerView"
         android:layout_width="match_parent"
@@ -27,7 +26,6 @@
         android:layout_below="@id/tasksText"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:nestedScrollingEnabled="true" />
-
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"

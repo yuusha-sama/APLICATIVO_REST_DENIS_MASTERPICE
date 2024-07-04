@@ -46,7 +46,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
         ViewHolder(View view) {
             super(view);
             todoCheckBox = view.findViewById(R.id.todoCheckBox);
-            todoText = view.findViewById(R.id.tasksText);
+            todoText = view.findViewById(R.id.todoText);
         }
     }
 }

@@ -76,11 +76,13 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
                         }
                         in.close();
 
+                        // Imprimir a resposta bruta no console
                         Log.d("FetchTasksTask", "Raw Response: " + response.toString());
-                                
+
                         JSONObject responseObject = new JSONObject(response.toString());
                         JSONArray jsonArray = responseObject.getJSONArray("results");
 
+                        // Imprimir no console
                         Log.d("FetchTasksTask", "Response Object: " + responseObject.toString());
                         Log.d("FetchTasksTask", "JSON Array: " + jsonArray.toString());
 
@@ -93,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
                             tasks.add(task);
                         }
                     } else {
-                        Log.e("FetchTasksTask", "Erro ao buscar as tarefas " + responseCode);
+                        Log.e("FetchTasksTask", "Server responded with code: " + responseCode);
                     }
                     urlConnection.disconnect();
                 } catch (Exception e) {
