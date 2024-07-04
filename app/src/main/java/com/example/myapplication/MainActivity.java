@@ -79,6 +79,9 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
                         JSONObject responseObject = new JSONObject(response.toString());
                         JSONArray jsonArray = responseObject.getJSONArray("results");
 
+                        Log.d("FetchTasksTask", "Response Object: " + responseObject.toString());
+                        Log.d("FetchTasksTask", "JSON Array: " + jsonArray.toString());
+
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject jsonObject = jsonArray.getJSONObject(i);
                             ToDoModel task = new ToDoModel();
