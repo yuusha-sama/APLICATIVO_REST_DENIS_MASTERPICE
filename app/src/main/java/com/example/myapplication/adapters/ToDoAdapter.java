@@ -5,13 +5,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.myapplication.R;
 import com.example.myapplication.model.ToDoModel;
-
 import java.util.List;
 
 public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
@@ -34,7 +31,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ToDoModel item = todoList.get(position);
         holder.todoText.setText(item.getTask());
-        holder.todoCheckBox.setChecked(item.getStatus() == 1);
+        holder.todoCheckBox.setChecked(item.getTaskStatus() == 1); // Verifica se taskStatus é igual a 1
     }
 
     @Override

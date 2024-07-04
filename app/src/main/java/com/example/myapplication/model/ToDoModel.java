@@ -4,22 +4,22 @@ import com.google.gson.annotations.SerializedName;
 
 public class ToDoModel {
 
-    @SerializedName("id")
-    private int id;
+    @SerializedName("id_task")
+    private int idTask;
 
     @SerializedName("task")
     private String task;
 
-    @SerializedName("status")
-    private int status;
+    @SerializedName("taskStatus")
+    private int taskStatus; // Alterado para int
 
     // Getters and setters
-    public int getId() {
-        return id;
+    public int getIdTask() {
+        return idTask;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setIdTask(int idTask) {
+        this.idTask = idTask;
     }
 
     public String getTask() {
@@ -30,11 +30,11 @@ public class ToDoModel {
         this.task = task;
     }
 
-    public int getStatus() {
-        return status;
+    public int getTaskStatus() {
+        return taskStatus;
     }
 
-    public void setStatus(int status) {
-        this.status = status;
+    public void setTaskStatus(int taskStatus) {
+        this.taskStatus = taskStatus;
     }
 }

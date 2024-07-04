@@ -1,37 +1,36 @@
 package com.example.myapplication;
 
 import android.content.DialogInterface;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.example.myapplication.adapters   .ToDoAdapter;
+import com.example.myapplication.adapters.ToDoAdapter;
 import com.example.myapplication.model.ToDoModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class MainActivity extends AppCompatActivity implements DialogCloseListener {
 
     private RecyclerView tasksRecyclerView;
     private ToDoAdapter tasksAdapter;
     private List<ToDoModel> taskList;
+    private final ExecutorService executor = Executors.newSingleThreadExecutor();
+    private final Handler handler = new Handler(Looper.getMainLooper());
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,55 +56,52 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
     }
 
     private void fetchTasks() {
-        new FetchTasksTask().execute();
-    }
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                final List<ToDoModel> tasks = new ArrayList<>();
+                try {
+                    URL url = new URL("http://datafit.com.br/api/task/TaskApi/");
+                    HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                    urlConnection.setRequestMethod("GET");
 
-    private class FetchTasksTask extends AsyncTask<Void, Void, List<ToDoModel>> {
-        @Override
-        protected List<ToDoModel> doInBackground(Void... voids) {
-            List<ToDoModel> tasks = new ArrayList<>();
-            try {
-                URL url = new URL("http://datafit.com.br/api/task/TaskApi/");
-                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-                urlConnection.setRequestMethod("GET");
+                    int responseCode = urlConnection.getResponseCode();
+                    if (responseCode == HttpURLConnection.HTTP_OK) {
+                        BufferedReader in = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+                        String inputLine;
+                        StringBuilder response = new StringBuilder();
 
-                int responseCode = urlConnection.getResponseCode();
-                if (responseCode == HttpURLConnection.HTTP_OK) {
-                    BufferedReader in = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-                    String inputLine;
-                    StringBuilder response = new StringBuilder();
+                        while ((inputLine = in.readLine()) != null) {
+                            response.append(inputLine);
+                        }
+                        in.close();
 
-                    while ((inputLine = in.readLine()) != null) {
-                        response.append(inputLine);
+                        JSONArray jsonArray = new JSONArray(response.toString());
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+                            ToDoModel task = new ToDoModel();
+                            task.setIdTask(jsonObject.getInt("id_task"));
+                            task.setTask(jsonObject.getString("task"));
+                            task.setTaskStatus(jsonObject.getInt("taskStatus")); // Agora seta como int
+                            tasks.add(task);
+                        }
+                    } else {
+                        Log.e("FetchTasksTask", "Server responded with code: " + responseCode);
                     }
-                    in.close();
-
-                    JSONArray jsonArray = new JSONArray(response.toString());
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        ToDoModel task = new ToDoModel();
-                        task.setId(jsonObject.getInt("id"));
-                        task.setTask(jsonObject.getString("task"));
-                        task.setStatus(jsonObject.getInt("status"));
-                        tasks.add(task);
-                    }
-                } else {
-                    Log.e("FetchTasksTask", "Server responded with code: " + responseCode);
+                    urlConnection.disconnect();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-                urlConnection.disconnect();
-            } catch (Exception e) {
-                e.printStackTrace();
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        taskList.clear();
+                        taskList.addAll(tasks);
+                        tasksAdapter.notifyDataSetChanged();
+                    }
+                });
             }
-            return tasks;
-        }
-
-        @Override
-        protected void onPostExecute(List<ToDoModel> tasks) {
-            super.onPostExecute(tasks);
-            taskList.clear();
-            taskList.addAll(tasks);
-            tasksAdapter.notifyDataSetChanged();
-        }
+        });
     }
 
     @Override
