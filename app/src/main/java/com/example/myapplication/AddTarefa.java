@@ -9,19 +9,15 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -88,7 +84,7 @@ public class AddTarefa extends DialogFragment {
             public void onClick(View v) {
                 String text = newTaskText.getText().toString();
                 if (finalIsUpdate) {
-                    // Implementar atualização se necessário
+
                 } else {
                     createTask(text);
                 }
@@ -109,7 +105,6 @@ public class AddTarefa extends DialogFragment {
 
                     JSONObject taskJson = new JSONObject();
                     taskJson.put("task", taskText);
-                    taskJson.put("status", 0);
 
                     OutputStream os = urlConnection.getOutputStream();
                     os.write(taskJson.toString().getBytes());
@@ -123,9 +118,9 @@ public class AddTarefa extends DialogFragment {
                         @Override
                         public void run() {
                             if (responseCode == HttpURLConnection.HTTP_CREATED || responseCode == HttpURLConnection.HTTP_OK) {
-                                Toast.makeText(getContext(), "Task created successfully", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "Tarefa criada com sucesso", Toast.LENGTH_SHORT).show();
                             } else {
-                                Toast.makeText(getContext(), "Failed to create task", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "Erro ao criar a tarefa", Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
@@ -134,7 +129,7 @@ public class AddTarefa extends DialogFragment {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(getContext(), "Failed to create task", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), "Erro ao criar a tarefa", Toast.LENGTH_SHORT).show();
                         }
                     });
                 }

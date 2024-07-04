@@ -76,17 +76,19 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
                         }
                         in.close();
 
-                        JSONArray jsonArray = new JSONArray(response.toString());
+                        JSONObject responseObject = new JSONObject(response.toString());
+                        JSONArray jsonArray = responseObject.getJSONArray("results");
+
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject jsonObject = jsonArray.getJSONObject(i);
                             ToDoModel task = new ToDoModel();
                             task.setIdTask(jsonObject.getInt("id_task"));
                             task.setTask(jsonObject.getString("task"));
-                            task.setTaskStatus(jsonObject.getInt("taskStatus")); // Agora seta como int
+                            task.setTaskStatus(jsonObject.getInt("taskStatus"));
                             tasks.add(task);
                         }
                     } else {
-                        Log.e("FetchTasksTask", "Server responded with code: " + responseCode);
+                        Log.e("FetchTasksTask", "Erro ao buscar as tarefas " + responseCode);
                     }
                     urlConnection.disconnect();
                 } catch (Exception e) {

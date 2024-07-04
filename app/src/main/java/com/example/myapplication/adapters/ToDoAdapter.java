@@ -31,7 +31,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ToDoModel item = todoList.get(position);
         holder.todoText.setText(item.getTask());
-        holder.todoCheckBox.setChecked(item.getTaskStatus() == 1); // Verifica se taskStatus é igual a 1
+        holder.todoCheckBox.setChecked(item.getTaskStatus() == 1);
     }
 
     @Override

@@ -11,9 +11,8 @@ public class ToDoModel {
     private String task;
 
     @SerializedName("taskStatus")
-    private int taskStatus; // Alterado para int
+    private int taskStatus;
 
-    // Getters and setters
     public int getIdTask() {
         return idTask;
     }
