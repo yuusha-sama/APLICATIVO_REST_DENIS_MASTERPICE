@@ -76,6 +76,8 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
                         }
                         in.close();
 
+                        Log.d("FetchTasksTask", "Raw Response: " + response.toString());
+                                
                         JSONObject responseObject = new JSONObject(response.toString());
                         JSONArray jsonArray = responseObject.getJSONArray("results");
 
