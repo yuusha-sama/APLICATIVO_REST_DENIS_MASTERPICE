@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
@@ -41,10 +42,54 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        ToDoModel item = todoList.get(position);
+    public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
+        final ToDoModel item = todoList.get(position);
         holder.todoText.setText(item.getTask());
         holder.todoCheckBox.setChecked(item.getTaskStatus() == 1);
+
+        holder.todoCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                int newStatus = isChecked ? 1 : 0;
+                updateTaskStatus(item.getIdTask(), newStatus);
+                item.setTaskStatus(newStatus);
+            }
+        });
+    }
+
+    private void updateTaskStatus(int taskId, int newStatus) {
+        new Thread(() -> {
+            HttpURLConnection urlConnection = null;
+            try {
+                URL url = new URL("http://datafit.com.br/api/task/TaskApi/");
+                urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setRequestMethod("PUT");
+                urlConnection.setRequestProperty("Content-Type", "application/json");
+
+                JSONObject taskJson = new JSONObject();
+                taskJson.put("id_task", taskId);
+                taskJson.put("taskStatus", newStatus);
+
+                urlConnection.setDoOutput(true);
+                OutputStream os = urlConnection.getOutputStream();
+                os.write(taskJson.toString().getBytes());
+                os.flush();
+                os.close();
+
+                int responseCode = urlConnection.getResponseCode();
+                Log.d("ToDoAdapter", "Response Code: " + responseCode);
+                if (responseCode != HttpURLConnection.HTTP_OK) {
+                    Log.e("ToDoAdapter", "Failed to update task status with id: " + taskId);
+                    Log.e("ToDoAdapter", "Response Message: " + urlConnection.getResponseMessage());
+                }
+            } catch (Exception e) {
+                Log.e("ToDoAdapter", "Exception during updating task status with id: " + taskId, e);
+            } finally {
+                if (urlConnection != null) {
+                    urlConnection.disconnect();
+                }
+            }
+        }).start();
     }
 
     @Override
