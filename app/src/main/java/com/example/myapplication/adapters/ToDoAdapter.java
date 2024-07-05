@@ -61,7 +61,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
         new Thread(() -> {
             HttpURLConnection urlConnection = null;
             try {
-                URL url = new URL("http://datafit.com.br/api/task/TaskApi/");
+                URL url = new URL("http://datafit.com.br/api/task/CompleteTaskApi/");
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("PUT");
                 urlConnection.setRequestProperty("Content-Type", "application/json");
