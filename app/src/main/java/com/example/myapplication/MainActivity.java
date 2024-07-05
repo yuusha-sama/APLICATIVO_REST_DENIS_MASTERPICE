@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.myapplication.adapters.ToDoAdapter;
@@ -41,8 +42,11 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
         tasksRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         taskList = new ArrayList<>();
-        tasksAdapter = new ToDoAdapter(taskList);
+        tasksAdapter = new ToDoAdapter(taskList, this);
         tasksRecyclerView.setAdapter(tasksAdapter);
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new AcaoDeletarAtualizar(tasksAdapter));
+        itemTouchHelper.attachToRecyclerView(tasksRecyclerView);
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -76,13 +80,11 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
                         }
                         in.close();
 
-                        // Imprimir a resposta bruta no console
                         Log.d("FetchTasksTask", "Raw Response: " + response.toString());
 
                         JSONObject responseObject = new JSONObject(response.toString());
                         JSONArray jsonArray = responseObject.getJSONArray("results");
 
-                        // Imprimir no console
                         Log.d("FetchTasksTask", "Response Object: " + responseObject.toString());
                         Log.d("FetchTasksTask", "JSON Array: " + jsonArray.toString());
 
