@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.myapplication">
 
-    <!-- Permissão para acesso à Internet -->
+
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -14,7 +14,7 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
 
-        <!-- SplashActivity como activity principal de lançamento -->
+
         <activity android:name=".SplashActivity"
             android:exported="true">
             <intent-filter>
@@ -23,10 +23,10 @@
             </intent-filter>
         </activity>
 
-        <!-- MainActivity como outra activity principal -->
+
         <activity android:name=".MainActivity" />
 
-        <!-- Adicione outras activities conforme necessário -->
+
 
     </application>
 
