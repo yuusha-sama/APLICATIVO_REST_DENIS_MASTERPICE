@@ -32,9 +32,9 @@ public class AcaoDeletarAtualizar extends ItemTouchHelper.SimpleCallback {
         final int position = viewHolder.getBindingAdapterPosition();
         if (direction == ItemTouchHelper.LEFT) {
             AlertDialog.Builder builder = new AlertDialog.Builder(adapter.getContext());
-            builder.setTitle("Delete Task");
-            builder.setMessage("Are you sure you want to delete this Task?");
-            builder.setPositiveButton("Confirm",
+            builder.setTitle("DELETAR TAREFA");
+            builder.setMessage("Você tem certeza que deseja excluir essa tarefa?");
+            builder.setPositiveButton("Confirmar",
                     new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {

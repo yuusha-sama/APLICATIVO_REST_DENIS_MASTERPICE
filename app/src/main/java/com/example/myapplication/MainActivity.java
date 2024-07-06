@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
                             tasks.add(task);
                         }
                     } else {
-                        Log.e("FetchTasksTask", "Server responded with code: " + responseCode);
+                        Log.e("FetchTasksTask", "Código de resposta do Servidor: " + responseCode);
                     }
                     urlConnection.disconnect();
                 } catch (Exception e) {

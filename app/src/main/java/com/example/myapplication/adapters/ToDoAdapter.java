@@ -79,11 +79,10 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
                 int responseCode = urlConnection.getResponseCode();
                 Log.d("ToDoAdapter", "Response Code: " + responseCode);
                 if (responseCode != HttpURLConnection.HTTP_OK) {
-                    Log.e("ToDoAdapter", "Failed to update task status with id: " + taskId);
-                    Log.e("ToDoAdapter", "Response Message: " + urlConnection.getResponseMessage());
+                    Log.e("ToDoAdapter", "Erro ao atualizar a tarefa: " + taskId);
                 }
             } catch (Exception e) {
-                Log.e("ToDoAdapter", "Exception during updating task status with id: " + taskId, e);
+                Log.e("ToDoAdapter", "Erro ao atualizar a tarefa: " + taskId, e);
             } finally {
                 if (urlConnection != null) {
                     urlConnection.disconnect();
@@ -128,10 +127,10 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
                         notifyItemRemoved(position);
                     });
                 } else {
-                    Log.e("ToDoAdapter", "Failed to delete task with id: " + idTask);
+                    Log.e("ToDoAdapter", "Erro ao excluir a tarefa: " + idTask);
                 }
             } catch (Exception e) {
-                Log.e("ToDoAdapter", "Exception during delete task with id: " + idTask, e);
+                Log.e("ToDoAdapter", "Erro ao excluir a tarefa: " + idTask, e);
             } finally {
                 if (urlConnection != null) {
                     urlConnection.disconnect();
